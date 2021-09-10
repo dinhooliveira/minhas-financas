@@ -1,6 +1,7 @@
 export default class TipoReceita{
     id: Number = null;
     descricao: String = null;
+    data_registro: Date;
 
     setId(id: Number){
         this.id = id;
@@ -17,7 +18,16 @@ export default class TipoReceita{
     }
 
     getDescricao(){
-        return this.id;
+        return this.descricao;
+    }
+
+    setDataRegistro(data_registro: Date){
+        this.data_registro = data_registro;
+        return this;
+    }
+
+    getDataRegistro(){
+        return this.data_registro;
     }
 
 }

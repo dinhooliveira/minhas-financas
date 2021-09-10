@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import ReceitaRepository from '../../database/repository/ReceitaRepository';
 import moedaIMG from '../../assets/icon/moeda.png';
+import { color } from '../../resource/const/Color';
 
 export default function ReceitaListScreen({ navigation }) {
 
@@ -59,15 +60,20 @@ export default function ReceitaListScreen({ navigation }) {
                 renderItem={({ item }) => {
                     return (
                         <View
-                            style={{ flexWrap: 'wrap' }}
+                            style={{ flexWrap: 'wrap',width:'100%' }}
                             key={Number(item.id)}
                             style={styles.item}>
-                            <Text> ( {item.id} )  {item.descricao}
-                                {'\n'} Data: {item.data}
-                                {'\n'} Registrado Em: {item.dataRegistro}
-                                {'\n'} tipo: {item.tipoReceitaId}
-                                {'\n'}R$ {mascaraTextMoedaPTBR(item.valor)
-                                }</Text>
+
+                            <View style={{ flexDirection: 'column', width:'100%' }}>
+                                <Text style={{ fontSize: 20, color:'grey', width: '100%',fontWeight:'bold' }}>{item.getDescricao()} </Text>
+                                <Text style={{ fontSize: 20, color: color.primary, width: '100%', fontStyle:'italic' }}>{item.getTipoReceita().getDescricao()} </Text>
+                                <Text style={{ fontSize:12, color:'grey', width: '100%' }}> DATA: {item.getData()}</Text>
+                                <Text style={{ fontSize:12, color:'grey', width: '100%' }}> DATA LANÇAMENTO: {item.getDataRegistro()}</Text>
+                                <View style={{ textAlign:'center',width:'100%',alignItems:'flex-end'}}>
+                                     <Text style={{ fontSize: 30, color: color.primary}}>R$ {mascaraTextMoedaPTBR(item.getValor())}</Text>
+                                </View>
+                                
+                            </View>
                         </View>
                     )
                 }}
@@ -80,8 +86,8 @@ export default function ReceitaListScreen({ navigation }) {
         <SafeAreaView
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <TouchableOpacity style={styles.buttonRefresh} title="add" onPress={() => getReceitasByData()}>
-            </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.buttonRefresh} title="add" onPress={() => getReceitasByData()}>
+            </TouchableOpacity> */}
             <TouchableOpacity style={styles.buttonAdd} title="add" onPress={() => navigation.navigate('receita')}>
                 <View>
                     <Image source={moedaIMG} style={{ with: '100%' }} />
@@ -162,8 +168,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         minHeight: 100,
         flexDirection: 'row',
-        borderBottomColor:'#ccc',
-        borderBottomWidth:1
-    
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1
+
     },
 });
