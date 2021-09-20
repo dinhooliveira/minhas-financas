@@ -8,7 +8,7 @@ import TipoReceitaRepository from '../../database/repository/TipoReceitaReposito
 import ReceitaRepository from '../../database/repository/ReceitaRepository';
 import {mascaraIputMoedaPTBR,removeMascaraMoedaPtBrParaFloat} from '../../resource/helper/Moeda';
 
-export default function ReceitaScreen({ navigation }) {
+export default function ReceitaCreateScreen({ navigation }) {
 
 
     const now = () => {

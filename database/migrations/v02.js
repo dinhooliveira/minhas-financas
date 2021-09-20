@@ -15,8 +15,8 @@ const  version = [
           hora_registro HOUR,
           FOREIGN KEY (tipo_despesa_id) REFERENCES tipo_despesa (id)
       );`,        
-      `INSERT INTO tipo_receita (descricao,data_registro) VALUES ('Alimentação','NOW()');`,
-      `INSERT INTO tipo_receita (descricao,data_registro) VALUES ('Educação','NOW()');`,
+      `INSERT INTO tipo_despesa (descricao,data_registro) VALUES ('Alimentação','NOW()');`,
+      `INSERT INTO tipo_despesa (descricao,data_registro) VALUES ('Educação','NOW()');`,
 ];
 
 export default version;

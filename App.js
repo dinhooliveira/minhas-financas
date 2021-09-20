@@ -1,8 +1,8 @@
 
 import React,{useEffect} from 'react';
 import HomeScreen from './screens/Home/HomeScreen';
-import ReceitaScreen from './screens/Receita/ReceitaScreen';
-import ReceitaListaScreen from './screens/Receita/ReceitaListScreen';
+import ReceitaCreateScreen from './screens/Receita/ReceitaCreateScreen';
+import ReceitaListScreen from './screens/Receita/ReceitaListScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { color } from './resource/const/Color';
@@ -30,7 +30,7 @@ export default function App() {
             }
           }}
         />
-         <Stack.Screen name="receita_lista" component={ReceitaListaScreen}
+         <Stack.Screen name="receita_lista" component={ReceitaListScreen}
           options={{
             title: 'Minhas Receitas',
             headerTintColor: color.white,
@@ -41,7 +41,7 @@ export default function App() {
 
           }}
         />
-        <Stack.Screen name="receita" component={ReceitaScreen}
+        <Stack.Screen name="receita" component={ReceitaCreateScreen}
           options={{
             title: 'Nova Receita',
             headerTintColor: color.white,
