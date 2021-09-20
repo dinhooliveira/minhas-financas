@@ -81,7 +81,7 @@ export default function ReceitaListScreen({ navigation }) {
                 },
                 {
                     text: "Cancel",
-                    onPress: () =>{console.log('cancelou')} ,
+                    onPress: () => { console.log('cancelou') },
                     style: "cancel",
                 },
             ]);
@@ -108,17 +108,42 @@ export default function ReceitaListScreen({ navigation }) {
                             <View style={{ flexDirection: 'column', width: '100%' }}>
                                 <View style={{ flexDirection: 'row', textAlign: 'center', width: '100%' }}>
                                     <View style={{ width: '70%' }}>
-                                        <Text style={{ fontSize: 20, color: 'grey', width: '100%', fontWeight: 'bold' }}>{item.getDescricao()} </Text>
-                                        <Text style={{ fontSize: 20, color: color.primary, width: '100%', fontStyle: 'italic' }}>{item.getTipoReceita().getDescricao()} </Text>
-                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}> DATA: {item.getData()}</Text>
-                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}> DATA LANÇAMENTO: {item.getDataRegistro()}</Text>
+                                        <Text style={{ fontSize: 20, color: 'grey', width: '100%', fontWeight: 'bold' }}>
+                                            {item.getDescricao()}
+                                        </Text>
+                                        <Text style={{ fontSize: 20, color: color.primary, width: '100%', fontStyle: 'italic' }}>
+                                            {item.getTipoReceita().getDescricao()}
+                                        </Text>
+                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}>
+                                            DATA: {item.getData()}
+                                        </Text>
+                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}>
+                                            DATA LANÇAMENTO: {item.getDataRegistro()}
+                                        </Text>
                                     </View>
                                     <View style={{ display: 'flex', flexDirection: 'row', alignSelf: 'flex-start', width: '30%' }}>
-                                        <TouchableOpacity style={{ backgroundColor: "#3498DB", padding: 10, borderRadius: 5, margin: 5, width: 40, height: 40 }}>
+                                        <TouchableOpacity
+                                            style={{
+                                                backgroundColor: "#3498DB",
+                                                padding: 10,
+                                                borderRadius: 5,
+                                                margin: 5,
+                                                width: 40,
+                                                height: 40
+                                            }}
+                                            onPress={()=>{navigation.navigate('receita_editar',{receita:item})}}
+                                        >
                                             <Image source={editarIMG} style={{ width: '100%' }} />
                                         </TouchableOpacity>
                                         <TouchableOpacity
-                                            style={{ backgroundColor: "red", padding: 10, borderRadius: 5, margin: 5, width: 40, height: 40 }}
+                                            style={{
+                                                backgroundColor: "red",
+                                                padding: 10,
+                                                borderRadius: 5,
+                                                margin: 5,
+                                                width: 40,
+                                                height: 40
+                                            }}
                                             onPress={() => deleteReceita(item.id)}
 
                                         >

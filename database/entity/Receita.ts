@@ -1,4 +1,5 @@
 import TipoReceita from "./TipoReceita";
+import { mascaraTextMoedaPTBR } from '../../resource/helper/Moeda';
 
 export default class Receita {
     id: Number;
@@ -45,6 +46,7 @@ export default class Receita {
     getData() {
         return this.data;
     }
+    
 
     setDataRegistro(data: Date) {
         this.dataRegistro = data;
@@ -73,6 +75,8 @@ export default class Receita {
         return this.valor;
     }
 
-
+    getValorPtBR(){
+        return mascaraTextMoedaPTBR(this.valor.toString());
+    }
 
 }

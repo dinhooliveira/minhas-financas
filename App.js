@@ -1,8 +1,9 @@
 
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import HomeScreen from './screens/Home/HomeScreen';
 import ReceitaCreateScreen from './screens/Receita/ReceitaCreateScreen';
 import ReceitaListScreen from './screens/Receita/ReceitaListScreen';
+import ReceitaEditScreen from './screens/Receita/ReceitaEditScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { color } from './resource/const/Color';
@@ -12,8 +13,9 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  useEffect(()=>{
-    new DatabaseInit()},
+  useEffect(() => {
+    new DatabaseInit()
+  },
     []);
   return (
     <NavigationContainer>
@@ -30,7 +32,7 @@ export default function App() {
             }
           }}
         />
-         <Stack.Screen name="receita_lista" component={ReceitaListScreen}
+        <Stack.Screen name="receita_lista" component={ReceitaListScreen}
           options={{
             title: 'Minhas Receitas',
             headerTintColor: color.white,
@@ -44,6 +46,17 @@ export default function App() {
         <Stack.Screen name="receita" component={ReceitaCreateScreen}
           options={{
             title: 'Nova Receita',
+            headerTintColor: color.white,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: color.primary,
+            }
+
+          }}
+        />
+        <Stack.Screen name="receita_editar" component={ReceitaEditScreen}
+          options={{
+            title: 'Editar Receita',
             headerTintColor: color.white,
             headerTitleAlign: 'center',
             headerStyle: {
