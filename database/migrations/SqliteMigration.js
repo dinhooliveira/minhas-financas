@@ -7,6 +7,7 @@ export default class SqliteMigration {
   
     execute = (db, next) => {
       function exec(tx, sql) {
+        console.log(sql);
         tx.executeSql(sql);
       }
   

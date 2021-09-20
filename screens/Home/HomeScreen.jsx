@@ -13,7 +13,7 @@ export default function HomeScreen({ navigation }) {
                 backgroundColor={color.primary}
             />
             <HomeButton title="Receita" image={imgReceita} actionClick={() => { navigation.navigate('receita_lista') }} />
-            <HomeButton title="Despesa" image={imgDespesa} actionClick={() => { navigation.navigate('receita') }} />
+            <HomeButton title="Despesa" image={imgDespesa} actionClick={() => { navigation.navigate('despesa_lista') }} />
         </View>
     );
 }

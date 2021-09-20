@@ -1,9 +1,14 @@
 
 import React, { useEffect } from 'react';
 import HomeScreen from './screens/Home/HomeScreen';
+
 import ReceitaCreateScreen from './screens/Receita/ReceitaCreateScreen';
 import ReceitaListScreen from './screens/Receita/ReceitaListScreen';
 import ReceitaEditScreen from './screens/Receita/ReceitaEditScreen';
+
+import DespesaListScreen from './screens/Despesa/DespesaListScreen';
+import DespesaCreateScreen from './screens/Despesa/DespesaCreateScreen';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { color } from './resource/const/Color';
@@ -57,6 +62,29 @@ export default function App() {
         <Stack.Screen name="receita_editar" component={ReceitaEditScreen}
           options={{
             title: 'Editar Receita',
+            headerTintColor: color.white,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: color.primary,
+            }
+
+          }}
+        />
+         <Stack.Screen name="despesa_lista" component={DespesaListScreen}
+          options={{
+            title: 'Minhas Despesas',
+            headerTintColor: color.white,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: color.primary,
+            }
+
+          }}
+        />
+         
+         <Stack.Screen name="despesa_criar" component={DespesaCreateScreen}
+          options={{
+            title: 'Nova Despesa ',
             headerTintColor: color.white,
             headerTitleAlign: 'center',
             headerStyle: {
