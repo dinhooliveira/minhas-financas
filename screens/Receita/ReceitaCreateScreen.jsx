@@ -5,7 +5,7 @@ import DatePicker from 'react-native-datepicker';
 import Receita from '../../database/entity/Receita';
 import TipoReceitaRepository from '../../database/repository/receita/TipoReceitaRepository';
 import ReceitaRepository from '../../database/repository/receita/ReceitaRepository';
-import {mascaraIputMoedaPTBR,removeMascaraMoedaPtBrParaFloat} from '../../resource/helper/Moeda';
+import { mascaraIputMoedaPTBR, removeMascaraMoedaPtBrParaFloat } from '../../resource/helper/Moeda';
 
 export default function ReceitaCreateScreen({ navigation }) {
 
@@ -20,7 +20,6 @@ export default function ReceitaCreateScreen({ navigation }) {
     const [valor, setValor] = useState('');
     const [tipoReceitaId, setTipoReceitaId] = useState('');
     const [TiposReceita, setTiposReceita] = useState([]);
-    const [receitas, setReceitas] = useState([]);
 
     useEffect(() => {
         getTiposReceita();
@@ -41,19 +40,10 @@ export default function ReceitaCreateScreen({ navigation }) {
         return true;
     }
 
-    const getReceitas = async () => {
-        const receitas = await ReceitaRepository.findAll();
-        if (receitas.length > 0) {
-            setReceitas(receitas);
-            return;
-        }
-        setReceitas([]);
-    }
-
     const getTiposReceita = async () => {
         const rs = await TipoReceitaRepository.findAll();
         if (rs.length > 0) {
-            setTiposReceita(rs._array);
+            setTiposReceita(rs);
         }
     }
 
@@ -78,7 +68,6 @@ export default function ReceitaCreateScreen({ navigation }) {
                 .setTipoReceitaId(tipoReceitaId)
         );
         clearForm();
-        console.log(rs);
         navigation.navigate('receita_lista');
     };
 
@@ -93,7 +82,7 @@ export default function ReceitaCreateScreen({ navigation }) {
                         placeholder="Ex:. Compra de roupa na loja X"
                         placeholderTextColor="black"
                         multiline={true}
-                        style={{ borderBottomWidth: 1, borderBottomColor:color.primary, width: '100%', margin: 2, padding: 10,fontSize: 20 }}
+                        style={{ borderBottomWidth: 1, borderBottomColor: color.primary, width: '100%', margin: 2, padding: 10, fontSize: 20 }}
                         value={descricao}
                         onChangeText={setDescricao}
                     />
@@ -102,14 +91,14 @@ export default function ReceitaCreateScreen({ navigation }) {
                         placeholder="R$ 000.000.000,00"
                         placeholderTextColor="black"
                         multiline={true}
-                        style={{ borderBottomWidth: 1, borderBottomColor:color.primary, width: '100%', margin: 2, padding: 10,fontSize: 20 }}
+                        style={{ borderBottomWidth: 1, borderBottomColor: color.primary, width: '100%', margin: 2, padding: 10, fontSize: 20 }}
                         value={valor}
                         onChangeText={formaReal}
                         keyboardType='numeric'
                     />
                     <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: 'bold' }}>Data</Text>
                     <DatePicker
-                        style={{ borderBottomWidth: 1, borderBottomColor:color.primary,width:'100%',fontSize: 20 }}
+                        style={{ borderBottomWidth: 1, borderBottomColor: color.primary, width: '100%', fontSize: 20 }}
                         format="DD/MM/YYYY"
                         date={date} // Initial date from state
                         mode="date" // The enum of date, datetime and time
@@ -119,10 +108,10 @@ export default function ReceitaCreateScreen({ navigation }) {
                         allowFontScaling={true}
                         showIcon={false}
                         customStyles={{
-                            dateInput:{
-                               borderWidth:0
+                            dateInput: {
+                                borderWidth: 0
                             },
-                            dateText:{
+                            dateText: {
                                 fontSize: 20
                             }
                         }}
@@ -130,15 +119,17 @@ export default function ReceitaCreateScreen({ navigation }) {
                     <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: 'bold' }}>Selecione um tipo</Text>
                     <Picker
                         selectedValue={tipoReceitaId}
-                        style={{ height: 50, borderStyle: 'solid', borderWidth: 1, textAlign: 'center',  transform: [
-                            { scaleX: 1.1 }, 
-                            { scaleY: 1.1 },
-                         ]}}
+                        style={{
+                            height: 50, borderStyle: 'solid', borderWidth: 1, textAlign: 'center', transform: [
+                                { scaleX: 1.1 },
+                                { scaleY: 1.1 },
+                            ]
+                        }}
                         onValueChange={(itemValue, itemIndex) => { setTipoReceitaId(itemValue); }}
                     >
                         <Picker.Item key={0} label="--" value="" />
                         {TiposReceita.map(TipoReceita => {
-                            return <Picker.Item  key={TipoReceita.id} label={`Código (${TipoReceita.id}) - ${TipoReceita.descricao}`} value={TipoReceita.id} />
+                            return <Picker.Item key={TipoReceita.getId()} label={`${TipoReceita.getDescricao()}`} value={TipoReceita.getId()} />
                         })}
                     </Picker>
                     <View style={{ marginTop: 10 }}>

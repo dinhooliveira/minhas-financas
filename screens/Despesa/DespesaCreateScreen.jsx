@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Picker} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Picker } from 'react-native';
 import { color } from '../../resource/const/Color';
 import DatePicker from 'react-native-datepicker';
 import Despesa from '../../database/entity/Despesa';
 import TipoDespesaRepository from '../../database/repository/despesa/TipoDespesaRepository';
 import DespesaRepository from '../../database/repository/despesa/DespesaRepository';
-import {mascaraIputMoedaPTBR,removeMascaraMoedaPtBrParaFloat} from '../../resource/helper/Moeda';
+import { mascaraIputMoedaPTBR, removeMascaraMoedaPtBrParaFloat } from '../../resource/helper/Moeda';
 
 export default function DespesaCreateScreen({ navigation }) {
 
@@ -41,19 +41,10 @@ export default function DespesaCreateScreen({ navigation }) {
         return true;
     }
 
-    const getDespesas = async () => {
-        const despesas = await DespesaRepository.findAll();
-        if (despesas.length > 0) {
-            setDespesas(despesas);
-            return;
-        }
-        setDespesas([]);
-    }
-
     const getTiposDespesa = async () => {
         const rs = await TipoDespesaRepository.findAll();
         if (rs.length > 0) {
-            setTiposDespesa(rs._array);
+            setTiposDespesa(rs);
         }
     }
 
@@ -93,7 +84,7 @@ export default function DespesaCreateScreen({ navigation }) {
                         placeholder="Ex:. Compra de roupa na loja X"
                         placeholderTextColor="black"
                         multiline={true}
-                        style={{ borderBottomWidth: 1, borderBottomColor:color.primary, width: '100%', margin: 2, padding: 10,fontSize: 20 }}
+                        style={{ borderBottomWidth: 1, borderBottomColor: color.primary, width: '100%', margin: 2, padding: 10, fontSize: 20 }}
                         value={descricao}
                         onChangeText={setDescricao}
                     />
@@ -102,14 +93,14 @@ export default function DespesaCreateScreen({ navigation }) {
                         placeholder="R$ 000.000.000,00"
                         placeholderTextColor="black"
                         multiline={true}
-                        style={{ borderBottomWidth: 1, borderBottomColor:color.primary, width: '100%', margin: 2, padding: 10,fontSize: 20 }}
+                        style={{ borderBottomWidth: 1, borderBottomColor: color.primary, width: '100%', margin: 2, padding: 10, fontSize: 20 }}
                         value={valor}
                         onChangeText={formaReal}
                         keyboardType='numeric'
                     />
                     <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: 'bold' }}>Data</Text>
                     <DatePicker
-                        style={{ borderBottomWidth: 1, borderBottomColor:color.primary,width:'100%',fontSize: 20 }}
+                        style={{ borderBottomWidth: 1, borderBottomColor: color.primary, width: '100%', fontSize: 20 }}
                         format="DD/MM/YYYY"
                         date={date} // Initial date from state
                         mode="date" // The enum of date, datetime and time
@@ -119,10 +110,10 @@ export default function DespesaCreateScreen({ navigation }) {
                         allowFontScaling={true}
                         showIcon={false}
                         customStyles={{
-                            dateInput:{
-                               borderWidth:0
+                            dateInput: {
+                                borderWidth: 0
                             },
-                            dateText:{
+                            dateText: {
                                 fontSize: 20
                             }
                         }}
@@ -130,15 +121,17 @@ export default function DespesaCreateScreen({ navigation }) {
                     <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: 'bold' }}>Selecione um tipo</Text>
                     <Picker
                         selectedValue={tipoDespesaId}
-                        style={{ height: 50, borderStyle: 'solid', borderWidth: 1, textAlign: 'center',  transform: [
-                            { scaleX: 1.1 }, 
-                            { scaleY: 1.1 },
-                         ]}}
+                        style={{
+                            height: 50, borderStyle: 'solid', borderWidth: 1, textAlign: 'center', transform: [
+                                { scaleX: 1.1 },
+                                { scaleY: 1.1 },
+                            ]
+                        }}
                         onValueChange={(itemValue, itemIndex) => { setTipoDespesaId(itemValue); }}
                     >
                         <Picker.Item key={0} label="--" value="" />
                         {tiposDespesa.map(TipoDespesa => {
-                            return <Picker.Item  key={TipoDespesa.id} label={`Código (${TipoDespesa.id}) - ${TipoDespesa.descricao}`} value={TipoDespesa.id} />
+                            return <Picker.Item key={TipoDespesa.getId()} label={`${TipoDespesa.getDescricao()}`} value={TipoDespesa.getId()} />
                         })}
                     </Picker>
                     <View style={{ marginTop: 10 }}>
