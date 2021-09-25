@@ -1,6 +1,5 @@
 import { useIsFocused } from '@react-navigation/native';
 import React, { useState, useEffect, useCallback } from 'react';
-import { mascaraTextMoedaPTBR } from '../../resource/helper/Moeda';
 import {
     SafeAreaView
     , StyleSheet
@@ -153,7 +152,7 @@ export default function DespesaListScreen({ navigation }) {
                                 </View>
 
                                 <View>
-                                    <Text style={{ fontSize: 30, color: 'red', alignSelf: 'flex-end' }}>R$ {mascaraTextMoedaPTBR(item.getValor())}</Text>
+                                    <Text style={{ fontSize: 30, color: 'red', alignSelf: 'flex-end' }}>R$ {item.getValorPtBR()}</Text>
                                 </View>
                             </View>
                         </View>

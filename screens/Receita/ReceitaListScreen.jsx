@@ -1,13 +1,11 @@
 import { useIsFocused } from '@react-navigation/native';
-import React, { useState, useEffect, useCallback } from 'react';
-import { mascaraTextMoedaPTBR } from '../../resource/helper/Moeda';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import {
     SafeAreaView
     , StyleSheet
     , Text
     , TouchableOpacity
     , ScrollView
-    , FlatList
     , View
     , RefreshControl
     , Image
@@ -17,21 +15,22 @@ import {
 import DatePicker from 'react-native-datepicker';
 import ReceitaRepository from '../../database/repository/receita/ReceitaRepository';
 import moedaIMG from '../../assets/icon/moeda-receita.png';
-import editarIMG from '../../assets/icon/editar.png';
-import excluirIMG from '../../assets/icon/excluir.png';
 import filtroIMG from '../../assets/icon/filtro.png';
 import { color } from '../../resource/const/Color';
+import ButtonRoundSmall from '../../componets/ButtonRoundSmall';
+import LancamentoItem from '../../componets/Lancamento/LancamentoItem';
+import { mascaraTextMoedaPTBR } from '../../resource/helper/Moeda';
 
 export default function ReceitaListScreen({ navigation }) {
 
     const isFocused = useIsFocused();
+
     useEffect(() => {
         getReceitas();
     }, [isFocused]);
 
     const dataInicio = () => {
         const date = new Date();
-        //console.log(date)
         return `01/${date.getMonth() + 1}/${date.getFullYear()}`;
     };
 
@@ -46,7 +45,7 @@ export default function ReceitaListScreen({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [dataInicial, setDataInicial] = useState(dataInicio());
     const [dataFinal, setDataFinal] = useState(dataFim());
-
+    const [valorTotal, setValorTotal] = useState(0);
 
 
     const getReceitas = async () => {
@@ -58,9 +57,11 @@ export default function ReceitaListScreen({ navigation }) {
 
         if (receitasResult.length > 0) {
             setReceitas(receitasResult);
+            getValorTotal(receitasResult);
             return;
         }
         setReceitas([]);
+
 
     }
 
@@ -91,75 +92,49 @@ export default function ReceitaListScreen({ navigation }) {
         getReceitas();
     });
 
-    function ShowList({ receitas }) {
+    const getValorTotal = (receitas) => {
+        let valor = 0;
+        receitas.forEach((item) => {
+            valor += item.getValor();
+        });
+        setValorTotal(valor);
+    }
+
+
+    const ShowList = ({ receitas }) => {
         if (receitas.length > 0) {
-            return <FlatList
-                style={styles.containerList}
-                data={receitas}
-                extraData={receitas}
-                keyExtractor={(item, index) => item.id.toString()}
-                renderItem={({ item }) => {
+            return <View style={styles.containerList}>
+                {receitas.map((item) => {
                     return (
-                        <View
-                            style={{ flexWrap: 'wrap', width: '100%' }}
-                            key={Number(item.id)}
-                            style={styles.item}>
+                        <LancamentoItem
+                            key={item.getId()}
+                            descricao={item.getDescricao()}
+                            tipoDescricao={item.getTipoReceita().getDescricao()}
+                            data={item.getData()}
+                            dataRegistro={item.getDataRegistro()}
+                            valor={item.getValorPtBR()}
+                            buttonActionRender={
+                                () => (
+                                    <Fragment>
+                                        <ButtonRoundSmall
+                                            typeAction="edit"
+                                            actionClick={() => { navigation.navigate('receita_editar', { receita: item }) }}
+                                        />
 
-                            <View style={{ flexDirection: 'column', width: '100%' }}>
-                                <View style={{ flexDirection: 'row', textAlign: 'center', width: '100%' }}>
-                                    <View style={{ width: '70%' }}>
-                                        <Text style={{ fontSize: 20, color: 'grey', width: '100%', fontWeight: 'bold' }}>
-                                            {item.getDescricao()}
-                                        </Text>
-                                        <Text style={{ fontSize: 20, color: color.primary, width: '100%', fontStyle: 'italic' }}>
-                                            {item.getTipoReceita().getDescricao()}
-                                        </Text>
-                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}>
-                                            DATA: {item.getData()}
-                                        </Text>
-                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}>
-                                            DATA LANÇAMENTO: {item.getDataRegistro()}
-                                        </Text>
-                                    </View>
-                                    <View style={{ display: 'flex', flexDirection: 'row', alignSelf: 'flex-start', width: '30%' }}>
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor: "#3498DB",
-                                                padding: 10,
-                                                borderRadius: 5,
-                                                margin: 5,
-                                                width: 40,
-                                                height: 40
-                                            }}
-                                            onPress={()=>{navigation.navigate('receita_editar',{receita:item})}}
-                                        >
-                                            <Image source={editarIMG} style={{ width: '100%' }} />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor: "red",
-                                                padding: 10,
-                                                borderRadius: 5,
-                                                margin: 5,
-                                                width: 40,
-                                                height: 40
-                                            }}
-                                            onPress={() => deleteReceita(item.id)}
+                                        <ButtonRoundSmall
+                                            typeAction="delete"
+                                            actionClick={() => deleteReceita(item.id)}
+                                        />
+                                    </Fragment>
+                                )
 
-                                        >
-                                            <Image source={excluirIMG} style={{ width: '100%' }} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
+                            }
 
-                                <View>
-                                    <Text style={{ fontSize: 30, color: color.primary, alignSelf: 'flex-end' }}>R$ {mascaraTextMoedaPTBR(item.getValor())}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    )
-                }}
-            />
+                        />
+                    );
+
+                })}
+            </View>
         }
         return <View style={{ marginTop: 100, alignItems: 'center', alignSelf: 'center' }}><Text>Sem receitas para exibir</Text></View>
     }
@@ -168,14 +143,18 @@ export default function ReceitaListScreen({ navigation }) {
         <SafeAreaView
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <TouchableOpacity style={styles.buttonRefresh} title="add" onPress={() => setModalVisible(true)}>
-                <Image source={filtroIMG} style={{ with: '100%' }} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonAdd} title="add" onPress={() => navigation.navigate('receita')}>
+            <View style={{ zIndex: 3, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <TouchableOpacity style={styles.buttonFilter} title="add" onPress={() => setModalVisible(true)}>
+                    <Image source={filtroIMG} />
+                </TouchableOpacity>
                 <View>
-                    <Image source={moedaIMG} style={{ with: '100%' }} />
+                    <Text style={{ fontSize: 20, color: color.primary }}>{mascaraTextMoedaPTBR(valorTotal)}</Text>
                 </View>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonAdd} title="add" onPress={() => navigation.navigate('receita')}>
+                    <Image source={moedaIMG} />
+                </TouchableOpacity>
+            </View>
+
 
             <ScrollView
                 refreshControl={
@@ -186,7 +165,6 @@ export default function ReceitaListScreen({ navigation }) {
                 }
             >
                 <ShowList receitas={receitas} />
-
             </ScrollView>
             <Modal
                 animationType="slide"
@@ -256,7 +234,8 @@ export default function ReceitaListScreen({ navigation }) {
                             <Text style={{ color: '#fff', alignSelf: 'center' }}>Cancelar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            width: 100, height: 50,
+                            width: 100,
+                            height: 50,
                             backgroundColor: color.primary,
                             justifyContent: 'center',
                             alignContent: 'center',
@@ -284,50 +263,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff"
     },
     buttonAdd: {
-        zIndex: 3,
+        justifyContent: 'center',
+        alignItems: 'center',
         width: 70,
         height: 70,
         padding: 10,
-        position: 'absolute',
-        top: 20,
-        right: 20,
         borderRadius: 50,
-        backgroundColor: '#fbbc05',
-        alignItems: 'center',
-        alignContent: 'center',
-        elevation: 11,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.36,
-        shadowRadius: 6.68,
-    },
-    buttonRefresh: {
-        zIndex: 3,
-        width: 50,
-        height: 50,
-        position: 'absolute',
-        top: 20,
-        left: 10,
-        borderRadius: 50,
-        backgroundColor: '#ffffff00',
-    },
-    containerList: {
-        padding: 15,
-        flex: 1,
-        marginTop: 100,
-        width: '100%'
-    },
-    item: {
-        padding: 10,
-        fontSize: 18,
-        minHeight: 100,
-        flexDirection: 'row',
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1
 
+    },
+    buttonFilter: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 70,
+        height: 70,
+        borderRadius: 50,
     },
     modalView: {
         marginTop: '70%',
