@@ -10,7 +10,7 @@ export default class TipoReceitaRepository {
         return new Promise((resolve, reject) => db.transaction(tx => {
             tx.executeSql(`select * from ${table}`, [], (_, { rows }) => {
                 const tiposDespesa = [];
-                rows._array.forEach(tipoDespesa => {
+                rows['_array'].forEach(tipoDespesa => {
                     tiposDespesa.push(
                         new TipoDespesa()
                             .setId(tipoDespesa.id)

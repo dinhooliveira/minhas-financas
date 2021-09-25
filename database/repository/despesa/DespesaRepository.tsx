@@ -32,44 +32,6 @@ export default class ReceitaRepository {
        `;
     };
 
-    static async findAll() {
-
-        return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(this.queryBuild(), []
-                ,
-                (_, { rows }
-                ) => {
-                    const result = [];
-                    // console.log(rows);
-                    if (rows.length > 0) {
-                        rows._array.forEach(despesa => {
-                            result.push(new Despesa()
-                                .setDescricao(despesa.descricao)
-                                .setId(despesa.id)
-                                .setData(despesa.despesa_data)
-                                .setDataRegistro(despesa.despesa_data_registro)
-                                .setTipoDespesaId(despesa.tipo_despesa_id)
-                                .setValor(despesa.valor)
-                                .setTipoDespesa(
-                                    new TipoDespesa()
-                                        .setDescricao(despesa.tipo_despesa_descricao)
-                                        .setId(despesa.tipo_despesa_id)
-                                        .setDataRegistro(despesa.tipo_despesa_data_registro)
-                                )
-                            );
-                        });
-                    }
-                    console.log(result)
-                    resolve(result)
-                }), (sqlError) => {
-                    console.log(sqlError);
-                }
-        }, (txError) => {
-            console.log(txError);
-        }))
-
-    }
-
     static create(despesa: Despesa) {
         const now = new Date();
         const data_registro = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
@@ -150,7 +112,7 @@ export default class ReceitaRepository {
                 const result = [];
                 // console.log(rows);
                 if (rows.length > 0) {
-                    rows._array.forEach(despesa => {
+                    rows['_array'].forEach(despesa => {
                         result.push(new Despesa()
                             .setDescricao(despesa.descricao)
                             .setId(despesa.id)

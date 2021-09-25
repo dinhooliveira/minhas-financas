@@ -49,7 +49,7 @@ export default function DespesaListScreen({ navigation }) {
 
 
 
-    getDespesas = async () => {
+    const getDespesas = async () => {
         const depesasResult = await DespesaRepository
             .clearFilter()
             .setDataInicio(dataInicial)
@@ -64,7 +64,7 @@ export default function DespesaListScreen({ navigation }) {
 
     }
 
-    deleteDespesa = async (id) => {
+    const deleteDespesa = async (id) => {
         Alert.alert(
             'Atenção',
             'Deseja efetuar a exclusão?',

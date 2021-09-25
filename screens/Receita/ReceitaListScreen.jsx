@@ -49,7 +49,7 @@ export default function ReceitaListScreen({ navigation }) {
 
 
 
-    getReceitas = async () => {
+    const getReceitas = async () => {
         const receitasResult = await ReceitaRepository
             .clearFilter()
             .setDataInicio(dataInicial)
@@ -64,7 +64,7 @@ export default function ReceitaListScreen({ navigation }) {
 
     }
 
-    deleteReceita = async (id) => {
+    const deleteReceita = async (id) => {
         Alert.alert(
             'Atenção',
             'Deseja efetuar a exclusão?',

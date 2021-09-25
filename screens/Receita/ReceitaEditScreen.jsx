@@ -27,7 +27,7 @@ export default function ReceitaEditScreen({ route, navigation }) {
     }, []);
 
 
-    fillForm = () => {
+    const fillForm = () => {
         setDescricao(receita.getDescricao());
         setTipoReceitaId(receita.getTipoReceita().getId())
         setValor(receita.getValorPtBR());

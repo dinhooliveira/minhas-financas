@@ -32,44 +32,6 @@ export default class ReceitaRepository {
        `;
     };
 
-    static async findAll() {
-
-        return new Promise((resolve, reject) => db.transaction(tx => {
-            tx.executeSql(this.queryBuild(), []
-                ,
-                (_, { rows }
-                ) => {
-                    const result = [];
-                    // console.log(rows);
-                    if (rows.length > 0) {
-                        rows._array.forEach(receita => {
-                            result.push(new Receita()
-                                .setDescricao(receita.descricao)
-                                .setId(receita.id)
-                                .setData(receita.receita_data)
-                                .setDataRegistro(receita.receita_data_registro)
-                                .setTipoReceitaId(receita.tipo_receita_id)
-                                .setValor(receita.valor)
-                                .setTipoReceita(
-                                    new TipoReceita()
-                                        .setDescricao(receita.tipo_receita_descricao)
-                                        .setId(receita.tipo_receita_id)
-                                        .setDataRegistro(receita.tipo_receita_data_registro)
-                                )
-                            );
-                        });
-                    }
-                    // console.log(result)
-                    resolve(result)
-                }), (sqlError) => {
-                    console.log(sqlError);
-                }
-        }, (txError) => {
-            console.log(txError);
-        }))
-
-    }
-
     static create(receita: Receita) {
         const now = new Date();
         const data_registro = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
@@ -150,7 +112,7 @@ export default class ReceitaRepository {
                 const result = [];
                 // console.log(rows);
                 if (rows.length > 0) {
-                    rows._array.forEach(receita => {
+                    rows['_array'].forEach(receita => {
                         result.push(new Receita()
                             .setDescricao(receita.descricao)
                             .setId(receita.id)
