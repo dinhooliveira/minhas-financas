@@ -20,6 +20,7 @@ import { color } from '../../resource/const/Color';
 import ButtonRoundSmall from '../../componets/ButtonRoundSmall';
 import LancamentoItem from '../../componets/Lancamento/LancamentoItem';
 import { mascaraTextMoedaPTBR } from '../../resource/helper/Moeda';
+import LancamentoContainer from '../../componets/Lancamento/LancamentoContainer';
 
 export default function DespesaListScreen({ navigation }) {
 
@@ -102,39 +103,42 @@ export default function DespesaListScreen({ navigation }) {
     function ShowList({ despesas }) {
 
         if (despesas.length > 0) {
-            return <View style={styles.containerList}>
-                {despesas.map((item) => {
-                    return (
-                        <LancamentoItem
-                            key={item.getId()}
-                            descricao={item.getDescricao()}
-                            tipoDescricao={item.getTipoDespesa().getDescricao()}
-                            data={item.getData()}
-                            dataRegistro={item.getDataRegistro()}
-                            valor={item.getValorPtBR()}
-                            tipoLancamento="despesa"
-                            buttonActionRender={
-                                () => (
-                                    <Fragment>
-                                        <ButtonRoundSmall
-                                            typeAction="edit"
-                                            actionClick={() => { navigation.navigate('despesa_editar', { receita: item }) }}
-                                        />
+            return <LancamentoContainer elements={
+                () => {
+                    despesas.map((item) => {
+                        return (
+                            <LancamentoItem
+                                key={item.getId()}
+                                descricao={item.getDescricao()}
+                                tipoDescricao={item.getTipoDespesa().getDescricao()}
+                                data={item.getData()}
+                                dataRegistro={item.getDataRegistro()}
+                                valor={item.getValorPtBR()}
+                                tipoLancamento="despesa"
+                                buttonActionRender={
+                                    () => (
+                                        <Fragment>
+                                            <ButtonRoundSmall
+                                                typeAction="edit"
+                                                actionClick={() => { navigation.navigate('despesa_editar', { receita: item }) }}
+                                            />
 
-                                        <ButtonRoundSmall
-                                            typeAction="delete"
-                                            actionClick={() => deleteDespesa(item.id)}
-                                        />
-                                    </Fragment>
-                                )
+                                            <ButtonRoundSmall
+                                                typeAction="delete"
+                                                actionClick={() => deleteDespesa(item.id)}
+                                            />
+                                        </Fragment>
+                                    )
 
-                            }
+                                }
 
-                        />
-                    );
+                            />
+                        );
 
-                })}
-            </View>
+                    })
+                }
+            }
+            />
         }
         return <View style={{ marginTop: 100, alignItems: 'center', alignSelf: 'center' }}><Text>Sem receitas para exibir</Text></View>
     }

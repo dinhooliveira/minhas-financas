@@ -20,6 +20,7 @@ import { color } from '../../resource/const/Color';
 import ButtonRoundSmall from '../../componets/ButtonRoundSmall';
 import LancamentoItem from '../../componets/Lancamento/LancamentoItem';
 import { mascaraTextMoedaPTBR } from '../../resource/helper/Moeda';
+import LancamentoContainer from '../../componets/Lancamento/LancamentoContainer';
 
 export default function ReceitaListScreen({ navigation }) {
 
@@ -103,8 +104,8 @@ export default function ReceitaListScreen({ navigation }) {
 
     const ShowList = ({ receitas }) => {
         if (receitas.length > 0) {
-            return <View style={styles.containerList}>
-                {receitas.map((item) => {
+            return <LancamentoContainer elements={
+                () => receitas.map((item) => {
                     return (
                         <LancamentoItem
                             key={item.getId()}
@@ -134,7 +135,7 @@ export default function ReceitaListScreen({ navigation }) {
                     );
 
                 })}
-            </View>
+            />
         }
         return <View style={{ marginTop: 100, alignItems: 'center', alignSelf: 'center' }}><Text>Sem receitas para exibir</Text></View>
     }
