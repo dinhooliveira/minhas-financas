@@ -1,12 +1,11 @@
 import { useIsFocused } from '@react-navigation/native';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import {
     SafeAreaView
     , StyleSheet
     , Text
     , TouchableOpacity
     , ScrollView
-    , FlatList
     , View
     , RefreshControl
     , Image
@@ -16,10 +15,11 @@ import {
 import DatePicker from 'react-native-datepicker';
 import DespesaRepository from '../../database/repository/despesa/DespesaRepository';
 import moedaIMG from '../../assets/icon/moeda-despesa.png';
-import editarIMG from '../../assets/icon/editar.png';
-import excluirIMG from '../../assets/icon/excluir.png';
 import filtroIMG from '../../assets/icon/filtro.png';
 import { color } from '../../resource/const/Color';
+import ButtonRoundSmall from '../../componets/ButtonRoundSmall';
+import LancamentoItem from '../../componets/Lancamento/LancamentoItem';
+import { mascaraTextMoedaPTBR } from '../../resource/helper/Moeda';
 
 export default function DespesaListScreen({ navigation }) {
 
@@ -45,8 +45,7 @@ export default function DespesaListScreen({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [dataInicial, setDataInicial] = useState(dataInicio());
     const [dataFinal, setDataFinal] = useState(dataFim());
-
-
+    const [valorTotal, setValorTotal] = useState(0);
 
     const getDespesas = async () => {
         const depesasResult = await DespesaRepository
@@ -57,6 +56,7 @@ export default function DespesaListScreen({ navigation }) {
 
         if (depesasResult.length > 0) {
             setDespesas(depesasResult);
+            getValorTotal(depesasResult);
             return;
         }
         setDespesas([]);
@@ -90,91 +90,71 @@ export default function DespesaListScreen({ navigation }) {
         getDespesas();
     });
 
+    const getValorTotal = (receitas) => {
+        let valor = 0;
+        receitas.forEach((item) => {
+            valor += item.getValor();
+        });
+        setValorTotal(valor);
+    }
+
+
     function ShowList({ despesas }) {
+
         if (despesas.length > 0) {
-            return <FlatList
-                style={styles.containerList}
-                data={despesas}
-                extraData={despesas}
-                keyExtractor={(item, index) => item.id.toString()}
-                renderItem={({ item }) => {
+            return <View style={styles.containerList}>
+                {despesas.map((item) => {
                     return (
-                        <View
-                            style={{ flexWrap: 'wrap', width: '100%' }}
-                            key={Number(item.id)}
-                            style={styles.item}>
+                        <LancamentoItem
+                            key={item.getId()}
+                            descricao={item.getDescricao()}
+                            tipoDescricao={item.getTipoDespesa().getDescricao()}
+                            data={item.getData()}
+                            dataRegistro={item.getDataRegistro()}
+                            valor={item.getValorPtBR()}
+                            tipoLancamento="despesa"
+                            buttonActionRender={
+                                () => (
+                                    <Fragment>
+                                        <ButtonRoundSmall
+                                            typeAction="edit"
+                                            actionClick={() => { navigation.navigate('despesa_editar', { receita: item }) }}
+                                        />
 
-                            <View style={{ flexDirection: 'column', width: '100%' }}>
-                                <View style={{ flexDirection: 'row', textAlign: 'center', width: '100%' }}>
-                                    <View style={{ width: '70%' }}>
-                                        <Text style={{ fontSize: 20, color: 'grey', width: '100%', fontWeight: 'bold' }}>
-                                            {item.getDescricao()}
-                                        </Text>
-                                        <Text style={{ fontSize: 20, color: color.primary, width: '100%', fontStyle: 'italic' }}>
-                                            {item.getTipoDespesa().getDescricao()}
-                                        </Text>
-                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}>
-                                            DATA: {item.getData()}
-                                        </Text>
-                                        <Text style={{ fontSize: 12, color: 'grey', width: '100%' }}>
-                                            DATA LANÇAMENTO: {item.getDataRegistro()}
-                                        </Text>
-                                    </View>
-                                    <View style={{ display: 'flex', flexDirection: 'row', alignSelf: 'flex-start', width: '30%' }}>
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor: "#3498DB",
-                                                padding: 10,
-                                                borderRadius: 5,
-                                                margin: 5,
-                                                width: 40,
-                                                height: 40
-                                            }}
-                                            onPress={() => { navigation.navigate('despesa_editar', { despesa: item }) }}
-                                        >
-                                            <Image source={editarIMG} style={{ width: '100%' }} />
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            style={{
-                                                backgroundColor: "red",
-                                                padding: 10,
-                                                borderRadius: 5,
-                                                margin: 5,
-                                                width: 40,
-                                                height: 40
-                                            }}
-                                            onPress={() => deleteDespesa(item.id)}
+                                        <ButtonRoundSmall
+                                            typeAction="delete"
+                                            actionClick={() => deleteDespesa(item.id)}
+                                        />
+                                    </Fragment>
+                                )
 
-                                        >
-                                            <Image source={excluirIMG} style={{ width: '100%' }} />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
+                            }
 
-                                <View>
-                                    <Text style={{ fontSize: 30, color: 'red', alignSelf: 'flex-end' }}>R$ {item.getValorPtBR()}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    )
-                }}
-            />
+                        />
+                    );
+
+                })}
+            </View>
         }
-        return <View style={{ marginTop: 100, alignItems: 'center', alignSelf: 'center' }}><Text>Sem despesas para exibir</Text></View>
+        return <View style={{ marginTop: 100, alignItems: 'center', alignSelf: 'center' }}><Text>Sem receitas para exibir</Text></View>
     }
 
     return (
         <SafeAreaView
             contentContainerStyle={{ flexGrow: 1 }}
         >
-            <TouchableOpacity style={styles.buttonRefresh} title="add" onPress={() => setModalVisible(true)}>
-                <Image source={filtroIMG} style={{ with: '100%' }} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttonAdd} title="add" onPress={() => navigation.navigate('despesa_criar')}>
+            <View style={{ zIndex: 3, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <TouchableOpacity style={styles.buttonTop} title="add" onPress={() => setModalVisible(true)}>
+                    <Image source={filtroIMG} />
+                </TouchableOpacity>
                 <View>
-                    <Image source={moedaIMG} style={{ with: '100%' }} />
+                    <Text style={{ fontSize: 20, color: 'red' }}>{mascaraTextMoedaPTBR(valorTotal)}</Text>
                 </View>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonTop} title="add" onPress={() => navigation.navigate('despesa_criar')}>
+                    <Image source={moedaIMG} />
+                </TouchableOpacity>
+            </View>
+
 
             <ScrollView
                 refreshControl={
@@ -282,51 +262,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff"
     },
-    buttonAdd: {
-        zIndex: 3,
+    buttonTop: {
+        justifyContent: 'center',
+        alignItems: 'center',
         width: 70,
         height: 70,
         padding: 10,
-        position: 'absolute',
-        top: 20,
-        right: 20,
         borderRadius: 50,
-        backgroundColor: '#fbbc05',
-        alignItems: 'center',
-        alignContent: 'center',
-        elevation: 11,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 5,
-        },
-        shadowOpacity: 0.36,
-        shadowRadius: 6.68,
-    },
-    buttonRefresh: {
-        zIndex: 3,
-        width: 50,
-        height: 50,
-        position: 'absolute',
-        top: 20,
-        left: 10,
-        borderRadius: 50,
-        backgroundColor: '#ffffff00',
-    },
-    containerList: {
-        padding: 15,
-        flex: 1,
-        marginTop: 100,
-        width: '100%'
-    },
-    item: {
-        padding: 10,
-        fontSize: 18,
-        minHeight: 100,
-        flexDirection: 'row',
-        borderBottomColor: '#ccc',
-        borderBottomWidth: 1
-
     },
     modalView: {
         marginTop: '70%',

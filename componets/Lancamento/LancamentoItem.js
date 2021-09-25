@@ -11,7 +11,7 @@ import { color as Color } from '../../resource/const/Color';
 export default function LancamentoItem({ descricao, tipoDescricao, data, dataRegistro, valor, tipoLancamento, buttonActionRender }) {
 
     let color = Color.primary;
-    if (buttonActionRender == 'despesa') {
+    if (tipoLancamento == 'despesa') {
         color = 'red';
     }
 
@@ -40,7 +40,7 @@ export default function LancamentoItem({ descricao, tipoDescricao, data, dataReg
                 </View>
 
                 <View>
-                    <Text style={{ fontSize: 30, color: color, alignSelf: 'flex-end' }}>R$ {valor}</Text>
+                    <Text style={{ fontSize: 30, color, alignSelf: 'flex-end' }}>R$ {valor}</Text>
                 </View>
             </View>
         </View>

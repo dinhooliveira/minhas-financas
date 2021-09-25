@@ -144,13 +144,13 @@ export default function ReceitaListScreen({ navigation }) {
             contentContainerStyle={{ flexGrow: 1 }}
         >
             <View style={{ zIndex: 3, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <TouchableOpacity style={styles.buttonFilter} title="add" onPress={() => setModalVisible(true)}>
+                <TouchableOpacity style={styles.buttonTop} title="add" onPress={() => setModalVisible(true)}>
                     <Image source={filtroIMG} />
                 </TouchableOpacity>
                 <View>
                     <Text style={{ fontSize: 20, color: color.primary }}>{mascaraTextMoedaPTBR(valorTotal)}</Text>
                 </View>
-                <TouchableOpacity style={styles.buttonAdd} title="add" onPress={() => navigation.navigate('receita')}>
+                <TouchableOpacity style={styles.buttonTop} title="add" onPress={() => navigation.navigate('receita')}>
                     <Image source={moedaIMG} />
                 </TouchableOpacity>
             </View>
@@ -262,20 +262,12 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#fff"
     },
-    buttonAdd: {
+    buttonTop: {
         justifyContent: 'center',
         alignItems: 'center',
         width: 70,
         height: 70,
         padding: 10,
-        borderRadius: 50,
-
-    },
-    buttonFilter: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 70,
-        height: 70,
         borderRadius: 50,
     },
     modalView: {
