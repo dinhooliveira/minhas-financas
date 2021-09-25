@@ -64,28 +64,28 @@ export default function DespesaListScreen({ navigation }) {
 
     }
 
-    // deleteReceita = async (id) => {
-    //     Alert.alert(
-    //         'Atenção',
-    //         'Deseja efetuar a exclusão?',
-    //         [
-    //             {
-    //                 text: "Confirmar",
-    //                 onPress: async () => {
-    //                     const despesaResult = await DespesaRepository.delete(id);
-    //                     console.log(despesaResult);
-    //                     alert("Excluido com sucesso!");
-    //                     this.getDespesas();
-    //                 },
-    //                 style: "confirm",
-    //             },
-    //             {
-    //                 text: "Cancel",
-    //                 onPress: () => { console.log('cancelou') },
-    //                 style: "cancel",
-    //             },
-    //         ]);
-    // }
+    deleteDespesa = async (id) => {
+        Alert.alert(
+            'Atenção',
+            'Deseja efetuar a exclusão?',
+            [
+                {
+                    text: "Confirmar",
+                    onPress: async () => {
+                        const despesaResult = await DespesaRepository.delete(id);
+                        console.log(despesaResult);
+                        alert("Excluido com sucesso!");
+                        this.getDespesas();
+                    },
+                    style: "confirm",
+                },
+                {
+                    text: "Cancel",
+                    onPress: () => { console.log('cancelou') },
+                    style: "cancel",
+                },
+            ]);
+    }
 
     const onRefresh = useCallback(() => {
         getDespesas();
@@ -122,7 +122,7 @@ export default function DespesaListScreen({ navigation }) {
                                         </Text>
                                     </View>
                                     <View style={{ display: 'flex', flexDirection: 'row', alignSelf: 'flex-start', width: '30%' }}>
-                                       <TouchableOpacity
+                                        <TouchableOpacity
                                             style={{
                                                 backgroundColor: "#3498DB",
                                                 padding: 10,
@@ -131,11 +131,11 @@ export default function DespesaListScreen({ navigation }) {
                                                 width: 40,
                                                 height: 40
                                             }}
-                                            onPress={()=>{navigation.navigate('despesa_editar',{despesa:item})}}
+                                            onPress={() => { navigation.navigate('despesa_editar', { despesa: item }) }}
                                         >
                                             <Image source={editarIMG} style={{ width: '100%' }} />
                                         </TouchableOpacity>
-                                      {/*   <TouchableOpacity
+                                        <TouchableOpacity
                                             style={{
                                                 backgroundColor: "red",
                                                 padding: 10,
@@ -144,11 +144,11 @@ export default function DespesaListScreen({ navigation }) {
                                                 width: 40,
                                                 height: 40
                                             }}
-                                            onPress={() => deleteReceita(item.id)}
+                                            onPress={() => deleteDespesa(item.id)}
 
                                         >
                                             <Image source={excluirIMG} style={{ width: '100%' }} />
-                                        </TouchableOpacity>  */}
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
 
