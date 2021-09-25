@@ -15,8 +15,8 @@ import {
     , Alert
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import ReceitaRepository from '../../database/repository/ReceitaRepository';
-import moedaIMG from '../../assets/icon/moeda.png';
+import ReceitaRepository from '../../database/repository/receita/ReceitaRepository';
+import moedaIMG from '../../assets/icon/moeda-receita.png';
 import editarIMG from '../../assets/icon/editar.png';
 import excluirIMG from '../../assets/icon/excluir.png';
 import filtroIMG from '../../assets/icon/filtro.png';

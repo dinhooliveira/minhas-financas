@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Picker, FlatList, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Picker } from 'react-native';
 import { color } from '../../resource/const/Color';
 import DatePicker from 'react-native-datepicker';
 import Receita from '../../database/entity/Receita';
-import TipoReceita from '../../database/entity/TipoReceita';
-import TipoReceitaRepository from '../../database/repository/TipoReceitaRepository';
-import ReceitaRepository from '../../database/repository/ReceitaRepository';
+import TipoReceitaRepository from '../../database/repository/receita/TipoReceitaRepository';
+import ReceitaRepository from '../../database/repository/receita/ReceitaRepository';
 import {mascaraIputMoedaPTBR,removeMascaraMoedaPtBrParaFloat} from '../../resource/helper/Moeda';
 
 export default function ReceitaCreateScreen({ navigation }) {

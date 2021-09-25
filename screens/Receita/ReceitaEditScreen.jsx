@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Picker, FlatList, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Picker } from 'react-native';
 import { color } from '../../resource/const/Color';
 import DatePicker from 'react-native-datepicker';
-import Receita from '../../database/entity/Receita';
-import TipoReceita from '../../database/entity/TipoReceita';
-import TipoReceitaRepository from '../../database/repository/TipoReceitaRepository';
-import ReceitaRepository from '../../database/repository/ReceitaRepository';
+import TipoReceitaRepository from '../../database/repository/receita/TipoReceitaRepository';
+import ReceitaRepository from '../../database/repository/receita/ReceitaRepository';
 import { mascaraIputMoedaPTBR, removeMascaraMoedaPtBrParaFloat } from '../../resource/helper/Moeda';
 
 export default function ReceitaEditScreen({ route, navigation }) {
@@ -20,8 +18,7 @@ export default function ReceitaEditScreen({ route, navigation }) {
     const [descricao, setDescricao] = useState('');
     const [valor, setValor] = useState('');
     const [tipoReceitaId, setTipoReceitaId] = useState('');
-    const [TiposReceita, setTiposReceita] = useState([]);
-    const [receitas, setReceitas] = useState([]);
+    const [tiposReceita, setTiposReceita] = useState([]);
 
     useEffect(() => {
         console.log(receita);
@@ -50,19 +47,10 @@ export default function ReceitaEditScreen({ route, navigation }) {
         return true;
     }
 
-    const getReceitas = async () => {
-        const receitas = await ReceitaRepository.findAll();
-        if (receitas.length > 0) {
-            setReceitas(receitas);
-            return;
-        }
-        setReceitas([]);
-    }
-
     const getTiposReceita = async () => {
         const rs = await TipoReceitaRepository.findAll();
         if (rs.length > 0) {
-            setTiposReceita(rs._array);
+            setTiposReceita(rs);
         }
     }
 
@@ -144,11 +132,11 @@ export default function ReceitaEditScreen({ route, navigation }) {
                                 { scaleY: 1.1 },
                             ]
                         }}
-                        onValueChange={(itemValue, itemIndex) => { setTipoReceitaId(itemValue); }}
+                        onValueChange={(itemValue, itemIndex) => { setTipoReceitaId(itemValue); }} a
                     >
                         <Picker.Item key={0} label="--" value="" />
-                        {TiposReceita.map(TipoReceita => {
-                            return <Picker.Item key={TipoReceita.id} label={`Código (${TipoReceita.id}) - ${TipoReceita.descricao}`} value={TipoReceita.id} />
+                        {tiposReceita.map(tipoReceita => {
+                            return <Picker.Item key={tipoReceita.getId()} label={`${tipoReceita.getDescricao()}`} value={tipoReceita.getId()} />
                         })}
                     </Picker>
                     <View style={{ marginTop: 10 }}>

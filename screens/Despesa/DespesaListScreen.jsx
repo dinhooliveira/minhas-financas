@@ -15,8 +15,8 @@ import {
     , Alert
 } from 'react-native';
 import DatePicker from 'react-native-datepicker';
-import DespesaRepository from '../../database/repository/DespesaRepository';
-import moedaIMG from '../../assets/icon/moeda.png';
+import DespesaRepository from '../../database/repository/despesa/DespesaRepository';
+import moedaIMG from '../../assets/icon/moeda-despesa.png';
 import editarIMG from '../../assets/icon/editar.png';
 import excluirIMG from '../../assets/icon/excluir.png';
 import filtroIMG from '../../assets/icon/filtro.png';
@@ -122,7 +122,7 @@ export default function DespesaListScreen({ navigation }) {
                                         </Text>
                                     </View>
                                     <View style={{ display: 'flex', flexDirection: 'row', alignSelf: 'flex-start', width: '30%' }}>
-                                        {/* <TouchableOpacity
+                                       <TouchableOpacity
                                             style={{
                                                 backgroundColor: "#3498DB",
                                                 padding: 10,
@@ -131,11 +131,11 @@ export default function DespesaListScreen({ navigation }) {
                                                 width: 40,
                                                 height: 40
                                             }}
-                                            onPress={()=>{navigation.navigate('receita_editar',{receita:item})}}
+                                            onPress={()=>{navigation.navigate('despesa_editar',{despesa:item})}}
                                         >
                                             <Image source={editarIMG} style={{ width: '100%' }} />
                                         </TouchableOpacity>
-                                        <TouchableOpacity
+                                      {/*   <TouchableOpacity
                                             style={{
                                                 backgroundColor: "red",
                                                 padding: 10,
@@ -148,12 +148,12 @@ export default function DespesaListScreen({ navigation }) {
 
                                         >
                                             <Image source={excluirIMG} style={{ width: '100%' }} />
-                                        </TouchableOpacity> */}
+                                        </TouchableOpacity>  */}
                                     </View>
                                 </View>
 
                                 <View>
-                                    <Text style={{ fontSize: 30, color: color.primary, alignSelf: 'flex-end' }}>R$ {mascaraTextMoedaPTBR(item.getValor())}</Text>
+                                    <Text style={{ fontSize: 30, color: 'red', alignSelf: 'flex-end' }}>R$ {mascaraTextMoedaPTBR(item.getValor())}</Text>
                                 </View>
                             </View>
                         </View>

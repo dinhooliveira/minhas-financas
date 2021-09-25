@@ -8,6 +8,7 @@ import ReceitaEditScreen from './screens/Receita/ReceitaEditScreen';
 
 import DespesaListScreen from './screens/Despesa/DespesaListScreen';
 import DespesaCreateScreen from './screens/Despesa/DespesaCreateScreen';
+import DespesaEditScreen from './screens/Despesa/DespesaEditScreen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -85,6 +86,18 @@ export default function App() {
          <Stack.Screen name="despesa_criar" component={DespesaCreateScreen}
           options={{
             title: 'Nova Despesa ',
+            headerTintColor: color.white,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: color.primary,
+            }
+
+          }}
+        />
+         
+         <Stack.Screen name="despesa_editar" component={DespesaEditScreen}
+          options={{
+            title: 'Editar Despesa ',
             headerTintColor: color.white,
             headerTitleAlign: 'center',
             headerStyle: {

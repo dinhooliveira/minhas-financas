@@ -1,7 +1,7 @@
-import { DatabaseConnection } from '../databaseConnection';
-import Receita from '../entity/Receita';
-import TipoReceita from '../entity/TipoReceita';
-import { brazilToUSAFormat } from '../../resource/helper/Data';
+import { DatabaseConnection } from '../../databaseConnection';
+import Receita from '../../entity/Receita';
+import TipoReceita from '../../entity/TipoReceita';
+import { brazilToUSAFormat } from '../../../resource/helper/Data';
 
 
 const table = "receita";
