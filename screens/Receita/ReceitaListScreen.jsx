@@ -25,7 +25,6 @@ import LancamentoContainer from '../../componets/Lancamento/LancamentoContainer'
 export default function ReceitaListScreen({ navigation }) {
 
     const isFocused = useIsFocused();
-
     useEffect(() => {
         getReceitas();
     }, [isFocused]);
@@ -75,9 +74,9 @@ export default function ReceitaListScreen({ navigation }) {
                     text: "Confirmar",
                     onPress: async () => {
                         const receitaResult = await ReceitaRepository.delete(id);
-                        console.log(receitaResult);
+                        // console.log(receitaResult);
                         alert("Excluido com sucesso!");
-                        this.getReceitas();
+                        getReceitas();
                     },
                     style: "confirm",
                 },

@@ -25,6 +25,12 @@ import LancamentoContainer from '../../componets/Lancamento/LancamentoContainer'
 export default function DespesaListScreen({ navigation }) {
 
     const isFocused = useIsFocused();
+
+    useEffect(() => {
+        getDespesas();
+    }, []);
+
+
     useEffect(() => {
         getDespesas();
     }, [isFocused]);
@@ -73,9 +79,9 @@ export default function DespesaListScreen({ navigation }) {
                     text: "Confirmar",
                     onPress: async () => {
                         const despesaResult = await DespesaRepository.delete(id);
-                        console.log(despesaResult);
+                        // console.log(despesaResult);
                         alert("Excluido com sucesso!");
-                        this.getDespesas();
+                        getDespesas();
                     },
                     style: "confirm",
                 },
@@ -100,43 +106,41 @@ export default function DespesaListScreen({ navigation }) {
     }
 
 
-    function ShowList({ despesas }) {
+    const ShowList = ({ despesas }) => {
 
         if (despesas.length > 0) {
-            return <LancamentoContainer elements={
-                () => {
-                    despesas.map((item) => {
-                        return (
-                            <LancamentoItem
-                                key={item.getId()}
-                                descricao={item.getDescricao()}
-                                tipoDescricao={item.getTipoDespesa().getDescricao()}
-                                data={item.getData()}
-                                dataRegistro={item.getDataRegistro()}
-                                valor={item.getValorPtBR()}
-                                tipoLancamento="despesa"
-                                buttonActionRender={
-                                    () => (
-                                        <Fragment>
-                                            <ButtonRoundSmall
-                                                typeAction="edit"
-                                                actionClick={() => { navigation.navigate('despesa_editar', { receita: item }) }}
-                                            />
+            return <LancamentoContainer elements={() => despesas.map((item) => {
+                    return (
+                        <LancamentoItem
+                            key={item.getId()}
+                            descricao={item.getDescricao()}
+                            tipoDescricao={item.getTipoDespesa().getDescricao()}
+                            data={item.getData()}
+                            dataRegistro={item.getDataRegistro()}
+                            valor={item.getValorPtBR()}
+                            tipoLancamento="despesa"
+                            buttonActionRender={
+                                () => (
+                                    <Fragment>
+                                        <ButtonRoundSmall
+                                            typeAction="edit"
+                                            actionClick={() => { navigation.navigate('despesa_editar', { despesa: item }) }}
+                                        />
 
-                                            <ButtonRoundSmall
-                                                typeAction="delete"
-                                                actionClick={() => deleteDespesa(item.id)}
-                                            />
-                                        </Fragment>
-                                    )
+                                        <ButtonRoundSmall
+                                            typeAction="delete"
+                                            actionClick={() => deleteDespesa(item.id)}
+                                        />
+                                    </Fragment>
+                                )
 
-                                }
+                            }
 
-                            />
-                        );
+                        />
+                    );
 
-                    })
-                }
+                })
+
             }
             />
         }

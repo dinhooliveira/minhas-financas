@@ -21,13 +21,12 @@ export default function DespesaEditScreen({ route, navigation }) {
     const [tiposDespesa, setTiposDepesa] = useState([]);
 
     useEffect(() => {
-        console.log(despesa);
         fillForm();
         getTiposDespesa();
     }, []);
 
 
-    fillForm = () => {
+    const fillForm = () => {
         setDescricao(despesa.getDescricao());
         setTipoDespesaId(despesa.getTipoDespesa().getId())
         setValor(despesa.getValorPtBR());
