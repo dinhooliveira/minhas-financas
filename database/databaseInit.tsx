@@ -16,10 +16,15 @@ export default class DatabaseInit {
     private InitDb() {
         const v1 = require('./migrations/v01').default;
         const v2 = require('./migrations/v02').default;
+        const v3 = require('./migrations/v03').default;
+        const v4 = require('./migrations/v04').default;
         const migrator = new SqliteMigrator(db);
         migrator.up(new SqliteMigration(1,v1));
         migrator.up(new SqliteMigration(2,v2));
+        migrator.up(new SqliteMigration(3,v3));
+        migrator.up(new SqliteMigration(4,v4));
         migrator.migrate();
+        
 
     }
 

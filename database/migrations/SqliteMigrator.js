@@ -72,5 +72,6 @@
       this._versions.push(migration.version);
       this._versions.sort((a, b) => a - b);
     }
+    
   }
   
