@@ -37,8 +37,7 @@ export default function DespesaListScreen({ navigation }) {
 
     const dataInicio = () => {
         const date = new Date();
-        //console.log(date)
-        return `01/${date.getMonth() + 1}/${date.getFullYear()}`;
+   return `01/${date.getMonth() + 1}/${date.getFullYear()}`;
     };
 
     const dataFim = () => {
@@ -110,36 +109,36 @@ export default function DespesaListScreen({ navigation }) {
 
         if (despesas.length > 0) {
             return <LancamentoContainer elements={() => despesas.map((item) => {
-                    return (
-                        <LancamentoItem
-                            key={item.getId()}
-                            descricao={item.getDescricao()}
-                            tipoDescricao={item.getTipoDespesa().getDescricao()}
-                            data={item.getData()}
-                            dataRegistro={item.getDataRegistro()}
-                            valor={item.getValorPtBR()}
-                            tipoLancamento="despesa"
-                            buttonActionRender={
-                                () => (
-                                    <Fragment>
-                                        <ButtonRoundSmall
-                                            typeAction="edit"
-                                            actionClick={() => { navigation.navigate('despesa_editar', { despesa: item }) }}
-                                        />
+                return (
+                    <LancamentoItem
+                        key={item.getId()}
+                        descricao={item.getDescricao()}
+                        tipoDescricao={item.getTipoDespesa().getDescricao()}
+                        data={item.getData()}
+                        dataRegistro={item.getDataRegistro()}
+                        valor={item.getValorPtBR()}
+                        tipoLancamento="despesa"
+                        buttonActionRender={
+                            () => (
+                                <Fragment>
+                                    <ButtonRoundSmall
+                                        typeAction="edit"
+                                        actionClick={() => { navigation.navigate('despesa_editar', { despesa: item }) }}
+                                    />
 
-                                        <ButtonRoundSmall
-                                            typeAction="delete"
-                                            actionClick={() => deleteDespesa(item.id)}
-                                        />
-                                    </Fragment>
-                                )
+                                    <ButtonRoundSmall
+                                        typeAction="delete"
+                                        actionClick={() => deleteDespesa(item.id)}
+                                    />
+                                </Fragment>
+                            )
 
-                            }
+                        }
 
-                        />
-                    );
+                    />
+                );
 
-                })
+            })
 
             }
             />
@@ -228,10 +227,11 @@ export default function DespesaListScreen({ navigation }) {
                         }}
                     />
 
-                    <View style={{ flexGrow: 2, flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 20 }}>
+                    <View style={{ flexGrow: 2, flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <TouchableOpacity style={{
                             width: 100,
                             height: 50,
+                            margin: 5,
                             backgroundColor: 'red',
                             justifyContent: 'center',
                             alignContent: 'center',
@@ -243,7 +243,9 @@ export default function DespesaListScreen({ navigation }) {
                             <Text style={{ color: '#fff', alignSelf: 'center' }}>Cancelar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={{
-                            width: 100, height: 50,
+                            width: 100,
+                            height: 50,
+                            margin: 5,
                             backgroundColor: color.primary,
                             justifyContent: 'center',
                             alignContent: 'center',
